@@ -22,22 +22,21 @@ public abstract class Entity {
     }
 
     void updatePos() {
-        if (!(this instanceof Car)) {
-            return;
-        }
-        if (y > c.getHeight() - height) { // Too far down
-            ySpeed = 0;
-            y = c.getHeight() - height;
-        } else if (y < 0) {  // Too far up
-            ySpeed = 0;
-            y = 0;
-        }
-        if (x > c.getWidth() - width) { // Too far right
-            xSpeed = 0;
-            x = c.getWidth() -width;
-        } else if (x < 0) { // Too far left
-            xSpeed = 0;
-            x = 0;
+        if (this instanceof Car) {
+            if (y > c.getHeight() - height) { // Too far down
+                ySpeed = 0;
+                y = c.getHeight() - height;
+            } else if (y < 0) {  // Too far up
+                ySpeed = 0;
+                y = 0;
+            }
+            if (x > c.getWidth() - width) { // Too far right
+                xSpeed = 0;
+                x = c.getWidth() -width;
+            } else if (x < 0) { // Too far left
+                xSpeed = 0;
+                x = 0;
+            }
         }
         y += ySpeed;
         x += xSpeed;
