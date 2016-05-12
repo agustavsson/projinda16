@@ -41,7 +41,7 @@ public class GameCanvas extends Canvas {
         if (e instanceof Obstacle) {
             obstacles.add((Obstacle) e);
         } else if (e instanceof Gas) {
-            entities.add((Gas) e);
+            entities.add(e);
         }
     }
 
