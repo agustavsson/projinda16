@@ -42,10 +42,10 @@ public class Motor extends Application {
         canvas.setCacheHint(CacheHint.SPEED);
         scene = new Scene(g);
 
-        primaryStage.setFullScreen(true);
+        // primaryStage.setFullScreen(true);
         primaryStage.setTitle("Game");
         primaryStage.setScene(scene);
-        primaryStage.setFullScreenExitHint("lol");
+        primaryStage.setFullScreenExitHint("press esc to exit");
         primaryStage.show();
         canvas.setWidth(scene.getWidth());
         canvas.setHeight(scene.getHeight());
@@ -90,12 +90,12 @@ public class Motor extends Application {
 
     // Has a chance to create an obstacle or gas can
     private void generateEntity() {
-        int next = random.nextInt(10000);
-        if (next < 50) {
+        int next = random.nextInt(200);
+        if (next < 1) {
             Image obstacleImage = getObstacleImage();
             Obstacle o = new Obstacle(obstacleImage, 50, 50, canvas);
             canvas.addEntity(o);
-        } else if (next < 100 && next > 50) {
+        } else if (next < 2 && next > 1) {
             Image gasImage = getGasImage();
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);
@@ -109,5 +109,33 @@ public class Motor extends Application {
 
     private Image getGasImage() {
         return gasImage;
+    }
+
+    public synchronized void playSound(String soundPath) {
+        new Thread(() -> {
+            try {
+                Clip clip = AudioSystem.getClip();
+                AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                        Main.class.getResourceAsStream(soundPath));
+                clip.open(inputStream);
+                clip.start();
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        }).start();
+    }
+
+    public synchronized void playSounds() {
+        new Thread(() -> {
+            try {
+                Clip clip = AudioSystem.getClip();
+                AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                        Main.class.getResourceAsStream("/sounds/music.wav"));
+                clip.open(inputStream);
+                clip.loop(100000000);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        }).start();
     }
 }

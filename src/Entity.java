@@ -25,11 +25,11 @@ public abstract class Entity {
         if (!(this instanceof Car)) {
             return;
         }
-        if (y > c.getHeight() - height) { // Too far Car
-            ySpeed = -ySpeed * 0.3;
+        if (y > c.getHeight() - height) { // Too far down
+            ySpeed = 0;
             y = c.getHeight() - height;
         } else if (y < 0) {  // Too far up
-            ySpeed = -ySpeed * 0.3;
+            ySpeed = 0;
             y = 0;
         }
         y += ySpeed;

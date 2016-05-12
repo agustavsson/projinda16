@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @author Philip Strömberg
- * Handles messages, draws entitys and keeps track of your score
+ * Handles messages, draws entities and keeps track of your score
  */
 public class GameCanvas extends Canvas {
     List<Entity> entities = new ArrayList<>();
