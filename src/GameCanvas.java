@@ -15,7 +15,7 @@ public class GameCanvas extends Canvas {
     public int drawAll(int score) {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
-        drawBackground(gc);
+        // drawBackground(gc);
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
             if (entity instanceof Obstacle && entity.getY() > this.getHeight() + entity.getHeight()) {

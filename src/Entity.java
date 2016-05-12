@@ -32,7 +32,15 @@ public abstract class Entity {
             ySpeed = 0;
             y = 0;
         }
+        if (x > c.getWidth() - width) { // Too far right
+            xSpeed = 0;
+            x = c.getWidth() -width;
+        } else if (x < 0) { // Too far left
+            xSpeed = 0;
+            x = 0;
+        }
         y += ySpeed;
+        x += xSpeed;
     }
 
     double getX() {

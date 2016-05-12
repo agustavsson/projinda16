@@ -55,9 +55,8 @@ public class Motor extends Application {
                 car.down();
             }
     });
-    
 
-        // primaryStage.setFullScreen(true);
+        primaryStage.setFullScreen(true);
         primaryStage.setTitle("Game");
         primaryStage.setScene(scene);
         primaryStage.setFullScreenExitHint("press esc to exit");
@@ -110,7 +109,7 @@ public class Motor extends Application {
             Image obstacleImage = getObstacleImage();
             Obstacle o = new Obstacle(obstacleImage, 50, 50, canvas);
             canvas.addEntity(o);
-        } else if (next < 2 && next > 1) {
+        } else if (next <= 2 && next > 1) {
             Image gasImage = getGasImage();
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);
