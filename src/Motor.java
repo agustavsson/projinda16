@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.input.KeyCode;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -41,6 +42,20 @@ public class Motor extends Application {
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
         scene = new Scene(g);
+         scene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.LEFT) {
+                car.left();
+            } else if (e.getCode() == KeyCode.RIGHT) {
+                car.right();
+            }
+              else if (e.getCode() == KeyCode.UP) {
+                car.up();
+            }  
+              else if(e.getCode() == KeyCode.DOWN) {
+                car.down();
+            }
+    });
+    
 
         // primaryStage.setFullScreen(true);
         primaryStage.setTitle("Game");
