@@ -77,7 +77,7 @@ public class Motor extends Application {
                         return;
                     }
                     generateEntity();
-                    score += canvas.drawAll(score);
+                    canvas.drawAll(score);
                 }
         );
         t.getKeyFrames().add(keyframe);
@@ -87,15 +87,17 @@ public class Motor extends Application {
 
     // Checks if there was a collision and you therefor lost
     private boolean hasLost() {
-        for (Entity e : canvas.entities) {
-            if (e instanceof Obstacle) {
-                Obstacle obstacle = (Obstacle) e;
-                if (obstacle.getY() + obstacle.getHeight() >= car.getY() &&
-                        obstacle.getX() + obstacle.getWidth() >= car.getX() &&
-                        obstacle.getY() <= car.getY() + car.getHeight() &&
-                        obstacle.getX() <= car.getX() + car.getWidth()
-                        ) {
+        for (Entity entity : canvas.entities) {
+            if (entity.getY() + entity.getHeight() >= car.getY() &&
+                    entity.getX() + entity.getWidth() >= car.getX() &&
+                    entity.getY() <= car.getY() + car.getHeight() &&
+                    entity.getX() <= car.getX() + car.getWidth()
+                    ) {
+                if (entity instanceof Obstacle) {
                     return true;
+                } else if (entity instanceof Gas) {
+                    score++;
+                    canvas.entities.remove(entity);
                 }
             }
         }
@@ -105,11 +107,11 @@ public class Motor extends Application {
     // Has a chance to create an obstacle or gas can
     private void generateEntity() {
         int next = random.nextInt(200);
-        if (next < 1) {
+        if (next < 2) {
             Image obstacleImage = getObstacleImage();
             Obstacle o = new Obstacle(obstacleImage, 50, 50, canvas);
             canvas.addEntity(o);
-        } else if (next <= 2 && next > 1) {
+        } else if (next <= 3 && next > 2) {
             Image gasImage = getGasImage();
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);

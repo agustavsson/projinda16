@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class GameCanvas extends Canvas {
     List<Entity> entities = new ArrayList<>();
-    List<Obstacle> obstacles = new ArrayList<>();
+    // List<Obstacle> obstacles = new ArrayList<>();
 
-    public int drawAll(int score) {
+    public void drawAll(int score) {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
         // drawBackground(gc);
@@ -20,7 +20,6 @@ public class GameCanvas extends Canvas {
             Entity entity = entities.get(i);
             if (entity instanceof Obstacle && entity.getY() > this.getHeight() + entity.getHeight()) {
                 entities.remove(entity);
-                return 0;
             }
             entity.updatePos();
             gc.drawImage(entity.getImage(), entity.getX(), entity.getY(), entity.getWidth(),
@@ -28,7 +27,6 @@ public class GameCanvas extends Canvas {
         }
         showMessage("Current score: " + score, 5, 20);
         gc.save();
-        return score;
     }
 
     public void drawBackground(GraphicsContext gc) {
@@ -39,7 +37,7 @@ public class GameCanvas extends Canvas {
     public void addEntity(Entity e) {
         entities.add(0, e);
         if (e instanceof Obstacle) {
-            obstacles.add((Obstacle) e);
+            entities.add(e);
         } else if (e instanceof Gas) {
             entities.add(e);
         }
