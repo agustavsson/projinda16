@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
  * Special class for the player controled car
  */
 public class Car extends Entity {
-    private int speed = 1;
 
     Car(Image image, int width, int height, GameCanvas canvas) {
         super(image, width, height, canvas);
@@ -13,20 +12,21 @@ public class Car extends Entity {
         y = canvas.getHeight() - height;
     }
 
-    public void left() {
-        xSpeed -= speed;
-    }
-
-    public void right() {
-        xSpeed += speed;
-    }
-
+    public void left() { left = true; }
+    public void right() { right = true; }
     public void up() {
-        ySpeed -= speed;
+        up = true;
     }
-
     public void down() {
-        ySpeed += speed;
+        down = true;
+    }
+    public void stopLeft() { left = false; }
+    public void stopRight() { right = false; }
+    public void stopUp() {
+        up = false;
+    }
+    public void stopDown() {
+        down = false;
     }
 
     @Override

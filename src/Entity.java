@@ -10,6 +10,13 @@ public abstract class Entity {
     private Image image;
     protected GameCanvas c;
 
+    // Only usable for Car class
+    protected boolean up = false;
+    protected boolean down = false;
+    protected boolean left = false;
+    protected boolean right = false;
+    private double speed = 0.5;
+
     Entity(Image image, int width, int height, GameCanvas c) {
         this.image = image;
         this.width = width;
@@ -23,6 +30,12 @@ public abstract class Entity {
 
     void updatePos() {
         if (this instanceof Car) {
+            if (this.up) { ySpeed -= speed; }
+            if (this.down) { ySpeed += speed; }
+            if (this.left) { xSpeed -= speed; }
+            if (this.right) { xSpeed += speed; }
+
+
             if (y > c.getHeight() - height) { // Too far down
                 ySpeed = 0;
                 y = c.getHeight() - height;

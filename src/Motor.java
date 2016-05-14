@@ -42,19 +42,35 @@ public class Motor extends Application {
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
         scene = new Scene(g);
-         scene.setOnKeyPressed(e -> {
+        scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.LEFT) {
                 car.left();
-            } else if (e.getCode() == KeyCode.RIGHT) {
+            }
+            if (e.getCode() == KeyCode.RIGHT) {
                 car.right();
             }
-              else if (e.getCode() == KeyCode.UP) {
+            if (e.getCode() == KeyCode.UP) {
                 car.up();
-            }  
-              else if(e.getCode() == KeyCode.DOWN) {
+            }
+            if (e.getCode() == KeyCode.DOWN) {
                 car.down();
             }
-    });
+        });
+
+        scene.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.LEFT) {
+                car.stopLeft();
+            }
+            if (e.getCode() == KeyCode.RIGHT) {
+                car.stopRight();
+            }
+            if (e.getCode() == KeyCode.UP) {
+                car.stopUp();
+            }
+            if (e.getCode() == KeyCode.DOWN) {
+                car.stopDown();
+            }
+        });
 
         primaryStage.setFullScreen(true);
         primaryStage.setTitle("Game");
