@@ -2,20 +2,16 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.CacheHint;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Random;
 
 /**
@@ -42,11 +38,10 @@ public class Motor extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         StackPane g = new StackPane();
-        g.setId("pane");
         g.getChildren().add(canvas);
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
-        scene = new Scene(g, 100, 100, Color.DARKGREY);
+        scene = new Scene(g);
 
         // Add for css background
         // scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
@@ -134,12 +129,12 @@ public class Motor extends Application {
     // Has a chance to create an obstacle or gas can
     private void generateEntity() {
         int next = random.nextInt(200);
-        if (next < 4) {
+        if (next < 10) {
             Image obstacleImage = getObstacleImage();
             Obstacle o = new Obstacle(obstacleImage, 50, 50, canvas);
             canvas.addEntity(o);
         }
-        if (next < 2) {
+        if (next < 4) {
             Image gasImage = getGasImage();
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);

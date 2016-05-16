@@ -1,6 +1,5 @@
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class GameCanvas extends Canvas {
         showMessage("Current score: " + score, 5, 20);
         gc.save();
     }
-    
+
     public void addEntity(Entity e) {
         entities.add(0, e);
         if (e instanceof Obstacle) {
