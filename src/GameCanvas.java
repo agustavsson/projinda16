@@ -14,8 +14,6 @@ public class GameCanvas extends Canvas {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
 
-        // A method to add a background, the css version lags less however
-        // drawBackground(gc);
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
             if (entity instanceof Obstacle && entity.getY() > this.getHeight() + entity.getHeight()) {
@@ -28,13 +26,7 @@ public class GameCanvas extends Canvas {
         showMessage("Current score: " + score, 5, 20);
         gc.save();
     }
-
-    // Unusable unless drawBackground(gc) in drawAll method is uncommented
-    public void drawBackground(GraphicsContext gc) {
-        gc.drawImage(new Image("/images/background.png"), 0, 0,
-                this.getWidth(), this.getHeight());
-    }
-
+    
     public void addEntity(Entity e) {
         entities.add(0, e);
         if (e instanceof Obstacle) {
