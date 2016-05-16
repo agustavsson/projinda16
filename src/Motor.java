@@ -2,6 +2,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.CacheHint;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,12 +35,20 @@ public class Motor extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        StackPane g = new StackPane();
+        Group g = new Group();
+
+        ImageView backgroundImageView;
+        Pane backgroundLayer;
+        backgroundLayer = new Pane();
+        backgroundImageView = new ImageView(getClass().getResource("images/background.png").toExternalForm());
+        backgroundLayer.getChildren().add(backgroundImageView);
+
+        g.getChildren().add(backgroundLayer);
         g.getChildren().add(canvas);
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
-        scene = new Scene(g);
 
+        scene = new Scene(g);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.LEFT) {
                 car.left();
@@ -54,7 +63,6 @@ public class Motor extends Application {
                 car.down();
             }
         });
-
         scene.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.LEFT) {
                 car.stopLeft();
