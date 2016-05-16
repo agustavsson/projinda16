@@ -5,6 +5,8 @@ import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
@@ -12,6 +14,8 @@ import javafx.scene.input.KeyCode;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 
 /**
@@ -37,11 +41,16 @@ public class Motor extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Group g = new Group();
+        StackPane g = new StackPane();
+        g.setId("pane");
         g.getChildren().add(canvas);
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
-        scene = new Scene(g);
+        scene = new Scene(g, 100, 100, Color.DARKGREY);
+
+        // Add for css background
+        // scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.LEFT) {
                 car.left();
@@ -103,7 +112,9 @@ public class Motor extends Application {
 
     // Checks if there was a collision and you therefor lost
     private boolean hasLost() {
-        for (Entity entity : canvas.entities) {
+        Iterator<Entity> entityIterator = canvas.entities.iterator();
+        while (entityIterator.hasNext()) {
+            Entity entity = entityIterator.next();
             if (entity.getY() + entity.getHeight() >= car.getY() &&
                     entity.getX() + entity.getWidth() >= car.getX() &&
                     entity.getY() <= car.getY() + car.getHeight() &&
@@ -113,7 +124,7 @@ public class Motor extends Application {
                     return true;
                 } else if (entity instanceof Gas) {
                     score++;
-                    canvas.entities.remove(entity);
+                    entityIterator.remove();
                 }
             }
         }
@@ -123,11 +134,12 @@ public class Motor extends Application {
     // Has a chance to create an obstacle or gas can
     private void generateEntity() {
         int next = random.nextInt(200);
-        if (next < 2) {
+        if (next < 4) {
             Image obstacleImage = getObstacleImage();
             Obstacle o = new Obstacle(obstacleImage, 50, 50, canvas);
             canvas.addEntity(o);
-        } else if (next <= 3 && next > 2) {
+        }
+        if (next < 2) {
             Image gasImage = getGasImage();
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);
@@ -143,26 +155,12 @@ public class Motor extends Application {
         return gasImage;
     }
 
-    public synchronized void playSound(String soundPath) {
-        new Thread(() -> {
-            try {
-                Clip clip = AudioSystem.getClip();
-                AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                        Main.class.getResourceAsStream(soundPath));
-                clip.open(inputStream);
-                clip.start();
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
-        }).start();
-    }
-
     public synchronized void playSounds() {
         new Thread(() -> {
             try {
                 Clip clip = AudioSystem.getClip();
                 AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                        Main.class.getResourceAsStream("/sounds/music.wav"));
+                        Motor.class.getResourceAsStream("/sounds/music.wav"));
                 clip.open(inputStream);
                 clip.loop(100000000);
             } catch (Exception e) {

@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 
 /**
  * @author Philip Strömberg
- * Abstract class for all obstacles and ships
+ *         Abstract class for all obstacles and ships
  */
 public abstract class Entity {
     protected double x, y, xSpeed, ySpeed;
@@ -30,11 +30,18 @@ public abstract class Entity {
 
     void updatePos() {
         if (this instanceof Car) {
-            if (this.up) { ySpeed -= speed; }
-            if (this.down) { ySpeed += speed; }
-            if (this.left) { xSpeed -= speed; }
-            if (this.right) { xSpeed += speed; }
-
+            if (this.up) {
+                ySpeed -= speed;
+            }
+            if (this.down) {
+                ySpeed += speed;
+            }
+            if (this.left) {
+                xSpeed -= speed;
+            }
+            if (this.right) {
+                xSpeed += speed;
+            }
 
             if (y > c.getHeight() - height) { // Too far down
                 ySpeed = 0;
@@ -45,7 +52,7 @@ public abstract class Entity {
             }
             if (x > c.getWidth() - width) { // Too far right
                 xSpeed = 0;
-                x = c.getWidth() -width;
+                x = c.getWidth() - width;
             } else if (x < 0) { // Too far left
                 xSpeed = 0;
                 x = 0;

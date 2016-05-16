@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Philip Strömberg
  * Handles messages, draws entities and keeps track of your score
  */
 public class GameCanvas extends Canvas {
     List<Entity> entities = new ArrayList<>();
-    // List<Obstacle> obstacles = new ArrayList<>();
 
     public void drawAll(int score) {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
+
+        // A method to add a background, the css version lags less however
         // drawBackground(gc);
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
@@ -22,13 +22,14 @@ public class GameCanvas extends Canvas {
                 entities.remove(entity);
             }
             entity.updatePos();
-            gc.drawImage(entity.getImage(), entity.getX(), entity.getY(), entity.getWidth(),
-                    entity.getHeight());
+            gc.drawImage(entity.getImage(), entity.getX(), entity.getY(),
+                    entity.getWidth(), entity.getHeight());
         }
         showMessage("Current score: " + score, 5, 20);
         gc.save();
     }
 
+    // Unusable unless drawBackground(gc) in drawAll method is uncommented
     public void drawBackground(GraphicsContext gc) {
         gc.drawImage(new Image("/images/background.png"), 0, 0,
                 this.getWidth(), this.getHeight());
