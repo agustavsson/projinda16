@@ -1,8 +1,7 @@
 import javafx.scene.image.Image;
 
 /**
- * @author Philip Strömberg
- *         Abstract class for all obstacles and ships
+ * Abstract class for all obstacles and ships
  */
 public abstract class Entity {
     protected double x, y, xSpeed, ySpeed;

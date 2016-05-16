@@ -2,7 +2,6 @@ import javafx.scene.image.Image;
 import java.util.Random;
 
 /**
- * @author Philip Strömberg
  * Extended class from Entity for meeting cars
  */
 public class Obstacle extends Entity {

@@ -1,8 +1,7 @@
 import javafx.scene.image.Image;
 
 /**
- * @author Philip Strömberg
- * Special class for the player controled car
+ * Special class for the player controlled car
  */
 public class Car extends Entity {
 

@@ -4,18 +4,18 @@ import javafx.application.Application;
 import javafx.scene.CacheHint;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javafx.util.Duration;
 import java.util.Iterator;
 import java.util.Random;
 
 /**
- * @author Philip Strömberg
  * Main engine behind the game. Handles entity creations and collisions
  */
 public class Motor extends Application {

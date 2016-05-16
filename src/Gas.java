@@ -2,7 +2,6 @@ import javafx.scene.image.Image;
 import java.util.Random;
 
 /**
- * @author Philip Strömberg
  * Special class for gas cans on the road
  */
 public class Gas extends Entity {
