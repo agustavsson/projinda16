@@ -19,18 +19,15 @@ import java.util.Random;
  * Main engine behind the game. Handles entity creations and collisions
  */
 public class Motor extends Application {
-    private String carSource = "/images/Car.png";
     private Image[] obstacleImage = {
             new Image("/images/Obstacle1.png"),
             new Image("/images/Obstacle2.png")
     };
+    private String carSource = "/images/Car.png";
     private Image gasImage = new Image("/images/Gas.png");
-
     private static final int FRAME_RATE = 60; // OK
     private int score = 0;
-
     private static Random random = new Random();
-
     private GameCanvas canvas = new GameCanvas();
     protected static Car car;
     private Scene scene;
@@ -42,9 +39,6 @@ public class Motor extends Application {
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
         scene = new Scene(g);
-
-        // Add for css background
-        // scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.LEFT) {
