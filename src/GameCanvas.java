@@ -27,12 +27,7 @@ public class GameCanvas extends Canvas {
     }
 
     public void addEntity(Entity e) {
-        entities.add(0, e);
-        if (e instanceof Obstacle) {
-            entities.add(e);
-        } else if (e instanceof Gas) {
-            entities.add(e);
-        }
+        entities.add(e);
     }
 
     public void showMessage(String message, double posX, double posY) {

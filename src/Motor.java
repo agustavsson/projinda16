@@ -26,12 +26,14 @@ public class Motor extends Application {
     };
     private String carSource = "/images/Car.png";
     private Image gasImage = new Image("/images/Gas.png");
-    private static final int FRAME_RATE = 60; // OK
+    private static final int FRAME_RATE = 60;// OK
     private int score = 0;
     private static Random random = new Random();
     private GameCanvas canvas = new GameCanvas();
     protected static Car car;
     private Scene scene;
+    private final int OBSTACLESPAWNRATE = 10;
+    private final int GASSPAWNRATE = 4;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -112,7 +114,7 @@ public class Motor extends Application {
         Iterator<Entity> entityIterator = canvas.entities.iterator();
         while (entityIterator.hasNext()) {
             Entity entity = entityIterator.next();
-            if (entity.getY() + entity.getHeight() >= car.getY() &&
+            if (    entity.getY() + entity.getHeight() >= car.getY() &&
                     entity.getX() + entity.getWidth() >= car.getX() &&
                     entity.getY() <= car.getY() + car.getHeight() &&
                     entity.getX() <= car.getX() + car.getWidth()
@@ -120,8 +122,8 @@ public class Motor extends Application {
                 if (entity instanceof Obstacle) {
                     return true;
                 } else if (entity instanceof Gas) {
-                    score++;
                     entityIterator.remove();
+                    score++;
                 }
             }
         }
@@ -131,12 +133,12 @@ public class Motor extends Application {
     // Has a chance to create an obstacle or gas can
     private void generateEntity() {
         int next = random.nextInt(200);
-        if (next < 10) {
+        if (next < OBSTACLESPAWNRATE) {
             Image obstacleImage = getObstacleImage();
             Obstacle o = new Obstacle(obstacleImage, 50, 50, canvas);
             canvas.addEntity(o);
         }
-        if (next < 4) {
+        if (next < GASSPAWNRATE) {
             Image gasImage = getGasImage();
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);
