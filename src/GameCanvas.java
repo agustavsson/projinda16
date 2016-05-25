@@ -9,7 +9,7 @@ import java.util.List;
 public class GameCanvas extends Canvas {
     List<Entity> entities = new ArrayList<>();
 
-    public void drawAll(int score) {
+    public void drawAll(long time) {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
 
@@ -22,12 +22,17 @@ public class GameCanvas extends Canvas {
             gc.drawImage(entity.getImage(), entity.getX(), entity.getY(),
                     entity.getWidth(), entity.getHeight());
         }
-        showMessage("Current score: " + score, 5, 20);
+        showMessage("Current time: " + time, 5, 20);
         gc.save();
+
     }
 
     public void addEntity(Entity e) {
         entities.add(e);
+    }
+
+    public void fuelTick() {
+
     }
 
     public void showMessage(String message, double posX, double posY) {
