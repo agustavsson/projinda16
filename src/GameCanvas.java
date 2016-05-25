@@ -31,10 +31,6 @@ public class GameCanvas extends Canvas {
         entities.add(e);
     }
 
-    public void fuelTick() {
-
-    }
-
     public void showMessage(String message, double posX, double posY) {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.fillText(message, posX, posY);
