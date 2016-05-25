@@ -16,6 +16,7 @@ import javax.sound.sampled.Clip;
 import javafx.util.Duration;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Timer;
 
 /**
  * Main engine behind the game. Handles entity creations and collisions
@@ -28,8 +29,6 @@ public class Motor extends Application {
     private String carSource = "/images/Car.png";
     private Image gasImage = new Image("/images/Gas.png");
     private static final int FRAME_RATE = 60;// OK
-    private int score = 0;
-    private int gas = 50;
     private int fuelCounter = 0;
     private Rectangle fuelbar = new Rectangle(100,10);
     private static Random random = new Random();
@@ -38,6 +37,7 @@ public class Motor extends Application {
     private Scene scene;
     private final int OBSTACLESPAWNRATE = 10;
     private final int GASSPAWNRATE = 4;
+    private double gasDelta = 0.1;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -48,7 +48,6 @@ public class Motor extends Application {
         backgroundLayer = new Pane();
         backgroundImageView = new ImageView(getClass().getResource("images/background.png").toExternalForm());
         Pane topLayer = new Pane();
-        //Rectangle fuel = new Rectangle(50,10);
         backgroundLayer.getChildren().add(backgroundImageView);
         topLayer.getChildren().add(fuelbar);
 
@@ -133,16 +132,13 @@ public class Motor extends Application {
                     ) {
                 if (entity instanceof Obstacle) {
                     return true;
-                } else if (entity instanceof Gas && gas < 100) {
+                } else if (entity instanceof Gas && fuelbar.getWidth() < 100) {
                     entityIterator.remove();
-                    if(gas < 100) {
-                    gas += 10;
                     fuelbar.setWidth(getFuelbarX() + 10);
-                    }
                 }
-                    if (fuelbar.getWidth() == 10) {
-                        return true;
-                    }
+            }
+            if(fuelbar.getWidth() < 1) {
+                return true;
             }
         }
         return false;
@@ -163,17 +159,12 @@ public class Motor extends Application {
         }
     }
 
-    private void incFuel() {
-        fuelbar.setWidth(getFuelbarX() + 10);
-    }
-
     private void tickFuel() {
         fuelCounter++;
-            if(fuelCounter%5 == 1) {
-            double gasDelta = 0.1;
-            //gas -= 0.00001;
-            fuelbar.setWidth(getFuelbarX() - gasDelta);
+        if(fuelCounter%2 == 0) {
+           fuelbar.setWidth(getFuelbarX() - gasDelta);  
         }
+        
     }
 
     private double getFuelbarX() {
