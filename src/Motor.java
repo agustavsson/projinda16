@@ -147,8 +147,8 @@ public class Motor extends Application {
                 }
             }
             if(fuelbar.getWidth() < 1) {
- -                return true;
- -          }
+                return true;
+            }
         }
         return false;
     }
