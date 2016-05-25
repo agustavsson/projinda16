@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.shape.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -28,6 +29,8 @@ public class Motor extends Application {
     private Image gasImage = new Image("/images/Gas.png");
     private static final int FRAME_RATE = 60;// OK
     private int score = 0;
+    private int gas = 90;
+    private Rectangle fuelbar = new Rectangle(90,10);
     private static Random random = new Random();
     private GameCanvas canvas = new GameCanvas();
     protected static Car car;
@@ -43,10 +46,15 @@ public class Motor extends Application {
         Pane backgroundLayer;
         backgroundLayer = new Pane();
         backgroundImageView = new ImageView(getClass().getResource("images/background.png").toExternalForm());
+        Pane topLayer = new Pane();
+        //Rectangle fuel = new Rectangle(50,10);
         backgroundLayer.getChildren().add(backgroundImageView);
+        topLayer.getChildren().add(fuelbar);
+
 
         g.getChildren().add(backgroundLayer);
         g.getChildren().add(canvas);
+        g.getChildren().add(topLayer);
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
 
@@ -121,9 +129,12 @@ public class Motor extends Application {
                     ) {
                 if (entity instanceof Obstacle) {
                     return true;
-                } else if (entity instanceof Gas) {
+                } else if (entity instanceof Gas && gas < 100) {
                     entityIterator.remove();
-                    score++;
+                    if(gas < 100) {
+                    gas += 10;
+                    fuelbar.setWidth(getFuelbarX() + 10);
+                    }
                 }
             }
         }
@@ -143,6 +154,14 @@ public class Motor extends Application {
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);
         }
+    }
+
+    private double getFuelbarX() {
+        return fuelbar.getWidth();
+    }
+
+    private double getFuelbarY() {
+        return fuelbar.getHeight();
     }
 
     private Image getObstacleImage() {
