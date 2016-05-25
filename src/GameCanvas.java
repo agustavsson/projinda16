@@ -9,22 +9,21 @@ import java.util.List;
 public class GameCanvas extends Canvas {
     List<Entity> entities = new ArrayList<>();
 
-    public void drawAll(long time) {
+    public void drawAll(int score) {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
 
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
-            if (entity instanceof Obstacle && entity.getY() > this.getHeight() + entity.getHeight()) {
+            if (entity instanceof Obstacle && entity.getY() > getHeight() + entity.getHeight()) {
                 entities.remove(entity);
             }
             entity.updatePos();
             gc.drawImage(entity.getImage(), entity.getX(), entity.getY(),
                     entity.getWidth(), entity.getHeight());
         }
-        showMessage("Current time: " + time, 5, 20);
+        showMessage("Current score: " + score, 5, 20);
         gc.save();
-
     }
 
     public void addEntity(Entity e) {

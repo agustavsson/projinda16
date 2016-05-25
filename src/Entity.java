@@ -1,7 +1,7 @@
 import javafx.scene.image.Image;
 
 /**
- * Abstract class for all obstacles and ships
+ | Abstract class for all obstacles and ships
  */
 public abstract class Entity {
     protected double x, y, xSpeed, ySpeed;
@@ -14,7 +14,7 @@ public abstract class Entity {
     protected boolean down = false;
     protected boolean left = false;
     protected boolean right = false;
-    private double speed = 0.5;
+    private double speed = 0.2;
 
     Entity(Image image, int width, int height, GameCanvas c) {
         this.image = image;

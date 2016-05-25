@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.shape.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -16,7 +15,6 @@ import javax.sound.sampled.Clip;
 import javafx.util.Duration;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Timer;
 
 /**
  * Main engine behind the game. Handles entity creations and collisions
@@ -29,15 +27,14 @@ public class Motor extends Application {
     private String carSource = "/images/Car.png";
     private Image gasImage = new Image("/images/Gas.png");
     private static final int FRAME_RATE = 60;// OK
-    private int fuelCounter = 0;
-    private Rectangle fuelbar = new Rectangle(100,10);
+    private int score = 0;
     private static Random random = new Random();
     private GameCanvas canvas = new GameCanvas();
+    private CarCanvas carCanvas = new CarCanvas();
     protected static Car car;
     private Scene scene;
-    private final int OBSTACLESPAWNRATE = 10;
+    private final int OBSTACLESPAWNRATE = 5;
     private final int GASSPAWNRATE = 4;
-    private double gasDelta = 0.1;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -47,16 +44,15 @@ public class Motor extends Application {
         Pane backgroundLayer;
         backgroundLayer = new Pane();
         backgroundImageView = new ImageView(getClass().getResource("images/background.png").toExternalForm());
-        Pane topLayer = new Pane();
         backgroundLayer.getChildren().add(backgroundImageView);
-        topLayer.getChildren().add(fuelbar);
-
 
         g.getChildren().add(backgroundLayer);
         g.getChildren().add(canvas);
-        g.getChildren().add(topLayer);
+        g.getChildren().add(carCanvas);
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
+        carCanvas.setCache(true);
+        carCanvas.setCacheHint(CacheHint.SPEED);
 
         scene = new Scene(g);
         scene.setOnKeyPressed(e -> {
@@ -95,10 +91,12 @@ public class Motor extends Application {
         primaryStage.show();
         canvas.setWidth(scene.getWidth());
         canvas.setHeight(scene.getHeight());
+        carCanvas.setWidth(scene.getWidth());
+        carCanvas.setHeight(scene.getHeight());
 
         car = new Car(new Image(carSource), 50, 50, canvas);
-        canvas.addEntity(car);
-        long startTime = (System.currentTimeMillis()/1000);
+
+
 
         Timeline t = new Timeline();
         t.setCycleCount(Timeline.INDEFINITE);
@@ -110,9 +108,8 @@ public class Motor extends Application {
                         return;
                     }
                     generateEntity();
-                    long currentTime = (System.currentTimeMillis()/1000) - startTime;
-                    canvas.drawAll(currentTime);
-                    tickFuel();
+                    canvas.drawAll(score);
+                    carCanvas.draw();
                 }
         );
         t.getKeyFrames().add(keyframe);
@@ -120,7 +117,7 @@ public class Motor extends Application {
         playSounds();
     }
 
-    // Checks if you ran out of fuel or if there was a collision and you therefor lost
+    // Checks if there was a collision and you therefor lost
     private boolean hasLost() {
         Iterator<Entity> entityIterator = canvas.entities.iterator();
         while (entityIterator.hasNext()) {
@@ -132,13 +129,10 @@ public class Motor extends Application {
                     ) {
                 if (entity instanceof Obstacle) {
                     return true;
-                } else if (entity instanceof Gas && fuelbar.getWidth() < 100) {
+                } else if (entity instanceof Gas) {
                     entityIterator.remove();
-                    fuelbar.setWidth(getFuelbarX() + 10);
+                    score++;
                 }
-            }
-            if(fuelbar.getWidth() < 1) {
-                return true;
             }
         }
         return false;
@@ -157,22 +151,6 @@ public class Motor extends Application {
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);
         }
-    }
-
-    private void tickFuel() {
-        fuelCounter++;
-        if(fuelCounter%2 == 0) {
-           fuelbar.setWidth(getFuelbarX() - gasDelta);  
-        }
-        
-    }
-
-    private double getFuelbarX() {
-        return fuelbar.getWidth();
-    }
-
-    private double getFuelbarY() {
-        return fuelbar.getHeight();
     }
 
     private Image getObstacleImage() {
