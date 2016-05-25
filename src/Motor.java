@@ -29,8 +29,9 @@ public class Motor extends Application {
     private Image gasImage = new Image("/images/Gas.png");
     private static final int FRAME_RATE = 60;// OK
     private int score = 0;
-    private int gas = 90;
-    private Rectangle fuelbar = new Rectangle(90,10);
+    private int gas = 50;
+    private int fuelCounter = 0;
+    private Rectangle fuelbar = new Rectangle(100,10);
     private static Random random = new Random();
     private GameCanvas canvas = new GameCanvas();
     protected static Car car;
@@ -98,6 +99,7 @@ public class Motor extends Application {
 
         car = new Car(new Image(carSource), 50, 50, canvas);
         canvas.addEntity(car);
+        long startTime = (System.currentTimeMillis()/1000);
 
         Timeline t = new Timeline();
         t.setCycleCount(Timeline.INDEFINITE);
@@ -109,7 +111,9 @@ public class Motor extends Application {
                         return;
                     }
                     generateEntity();
-                    canvas.drawAll(score);
+                    long currentTime = (System.currentTimeMillis()/1000) - startTime;
+                    canvas.drawAll(currentTime);
+                    tickFuel();
                 }
         );
         t.getKeyFrames().add(keyframe);
@@ -117,7 +121,7 @@ public class Motor extends Application {
         playSounds();
     }
 
-    // Checks if there was a collision and you therefor lost
+    // Checks if you ran out of fuel or if there was a collision and you therefor lost
     private boolean hasLost() {
         Iterator<Entity> entityIterator = canvas.entities.iterator();
         while (entityIterator.hasNext()) {
@@ -136,6 +140,9 @@ public class Motor extends Application {
                     fuelbar.setWidth(getFuelbarX() + 10);
                     }
                 }
+                    if (fuelbar.getWidth() == 10) {
+                        return true;
+                    }
             }
         }
         return false;
@@ -153,6 +160,19 @@ public class Motor extends Application {
             Image gasImage = getGasImage();
             Gas g = new Gas(gasImage, 50, 50, canvas);
             canvas.addEntity(g);
+        }
+    }
+
+    private void incFuel() {
+        fuelbar.setWidth(getFuelbarX() + 10);
+    }
+
+    private void tickFuel() {
+        fuelCounter++;
+            if(fuelCounter%5 == 1) {
+            double gasDelta = 0.1;
+            //gas -= 0.00001;
+            fuelbar.setWidth(getFuelbarX() - gasDelta);
         }
     }
 
