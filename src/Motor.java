@@ -15,6 +15,8 @@ import javax.sound.sampled.Clip;
 import javafx.util.Duration;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Timer;
+import javafx.scene.shape.*;
 
 /**
  * Main engine behind the game. Handles entity creations and collisions
@@ -35,6 +37,9 @@ public class Motor extends Application {
     private Scene scene;
     private final int OBSTACLESPAWNRATE = 5;
     private final int GASSPAWNRATE = 4;
+    private double gasDelta = 0.1;
+    private int fuelCounter = 0;
+    private Rectangle fuelbar = new Rectangle(100,10);    
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -45,9 +50,12 @@ public class Motor extends Application {
         backgroundLayer = new Pane();
         backgroundImageView = new ImageView(getClass().getResource("images/background.png").toExternalForm());
         backgroundLayer.getChildren().add(backgroundImageView);
+        Pane topLayer = new Pane();
+        topLayer.getChildren().add(fuelbar);
 
         g.getChildren().add(backgroundLayer);
         g.getChildren().add(canvas);
+        g.getChildren().add(topLayer);
         g.getChildren().add(carCanvas);
         canvas.setCache(true);
         canvas.setCacheHint(CacheHint.SPEED);
@@ -95,7 +103,7 @@ public class Motor extends Application {
         carCanvas.setHeight(scene.getHeight());
 
         car = new Car(new Image(carSource), 50, 50, canvas);
-
+        long startTime = (System.currentTimeMillis()/1000);
 
 
         Timeline t = new Timeline();
@@ -107,6 +115,9 @@ public class Motor extends Application {
                         t.stop();
                         return;
                     }
+                    long currentTime = (System.currentTimeMillis()/1000) - startTime;
+                    canvas.drawAll(currentTime);
+                    tickFuel();
                     generateEntity();
                     canvas.drawAll(score);
                     carCanvas.draw();
@@ -117,7 +128,7 @@ public class Motor extends Application {
         playSounds();
     }
 
-    // Checks if there was a collision and you therefor lost
+    // Checks if you ran out of fuel or if there was a collision and you therefor lost
     private boolean hasLost() {
         Iterator<Entity> entityIterator = canvas.entities.iterator();
         while (entityIterator.hasNext()) {
@@ -129,11 +140,15 @@ public class Motor extends Application {
                     ) {
                 if (entity instanceof Obstacle) {
                     return true;
-                } else if (entity instanceof Gas) {
+                } else if (entity instanceof Gas && fuelbar.getWidth() < 100) {
                     entityIterator.remove();
                     score++;
+                    fuelbar.setWidth(getFuelbarX() + 10);
                 }
             }
+            if(fuelbar.getWidth() < 1) {
+ -                return true;
+ -          }
         }
         return false;
     }
@@ -152,6 +167,22 @@ public class Motor extends Application {
             canvas.addEntity(g);
         }
     }
+    private void tickFuel() {
+        fuelCounter++;
+        if(fuelCounter%2 == 0) {
+           fuelbar.setWidth(getFuelbarX() - gasDelta);  
+        }
+        
+    }
+
+    private double getFuelbarX() {
+        return fuelbar.getWidth();
+    }
+
+    private double getFuelbarY() {
+        return fuelbar.getHeight();
+    }
+
 
     private Image getObstacleImage() {
         int i = random.nextInt(obstacleImage.length);
