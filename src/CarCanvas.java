@@ -17,7 +17,11 @@ public class CarCanvas extends Canvas {
         gc.drawImage(Motor.car.getImage(), Motor.car.getX(), Motor.car.getY(),
         Motor.car.getWidth(), Motor.car.getHeight());
 
-        rotation = -Math.toDegrees(Math.atan(Motor.car.xSpeed/Motor.car.ySpeed));
+        if (Motor.car.ySpeed > 0) {
+            rotation = 180 - Math.toDegrees(Math.atan(Motor.car.xSpeed/Motor.car.ySpeed));
+        } else {
+            rotation = -Math.toDegrees(Math.atan(Motor.car.xSpeed / Motor.car.ySpeed));
+        }
 
         Rotate r = new Rotate(rotation, Motor.car.getX() + Motor.car.getWidth()/2,
                 Motor.car.getY() + Motor.car.getHeight()/2);
