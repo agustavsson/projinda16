@@ -75,6 +75,10 @@ public class Motor extends Application {
             }
             if (e.getCode() == KeyCode.DOWN) {
                 car.down();
+            }if (e.getCode() == KeyCode.SPACE) {
+                car.boost();
+                carSource = "/images/fire.png";
+                car = new Car(new Image(carSource), 50, 100, canvas);
             }
         });
         scene.setOnKeyReleased(e -> {
@@ -89,6 +93,10 @@ public class Motor extends Application {
             }
             if (e.getCode() == KeyCode.DOWN) {
                 car.stopDown();
+            } if (e.getCode() == KeyCode.SPACE) {
+                car.stopBoost();
+                carSource = "/images/Car.png";
+                car = new Car(new Image(carSource), 50, 50, canvas);
             }
         });
 

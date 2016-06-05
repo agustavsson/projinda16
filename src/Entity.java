@@ -14,7 +14,9 @@ public abstract class Entity {
     protected boolean down = false;
     protected boolean left = false;
     protected boolean right = false;
+    protected boolean boost = false;
     private double speed = 0.2;
+    private double boostMultiplier = 10000;
 
     Entity(Image image, int width, int height, GameCanvas c) {
         this.image = image;
@@ -29,6 +31,10 @@ public abstract class Entity {
 
     void updatePos() {
         if (this instanceof Car) {
+
+            if (this.boost) {
+                speed *= boostMultiplier;
+            }
             if (this.up) {
                 ySpeed -= speed;
             }
@@ -40,6 +46,9 @@ public abstract class Entity {
             }
             if (this.right) {
                 xSpeed += speed;
+            }
+            if (this.boost) {
+                speed /= boostMultiplier;
             }
 
             if (y > c.getHeight() - height) { // Too far down

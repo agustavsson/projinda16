@@ -27,6 +27,8 @@ public class Car extends Entity {
     public void stopDown() {
         down = false;
     }
+    public void boost() { boost = true; }
+    public void stopBoost() { boost = false; }
 
     @Override
     public void updatePos() {
